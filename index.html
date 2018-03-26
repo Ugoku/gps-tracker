@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GPS tracker</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>GPS tracker</h1>
+    </header>
+    <main id="map"></main>
+    <footer>
+        TODO: save to file
+    </footer>
+</body>
+<script>
+    let map;
+    const initGeoLocation = function() {
+        if (!navigator.geolocation) {
+            alert('Your browser does not support geolocation.\nThis website is useless for you.');
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            map.setCenter(pos);
+        });
+    };
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: {
+                lat: 52.9154237,
+                lng: 6.6556549,
+            }
+        });
+        initGeoLocation();
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE&callback=initMap"></script>
+</html>
