@@ -16,7 +16,15 @@
     </footer>
 </body>
 <script>
+    let center = {
+        lat: 52.9154237,
+        lng: 6.6556549,
+    };
     let map;
+    let marker;
+    let track;
+    let trackCoordinates = [];
+
     const initGeoLocation = function() {
         if (!navigator.geolocation) {
             alert('Your browser does not support geolocation.\nThis website is useless for you.');
@@ -28,19 +36,39 @@
                 lng: position.coords.longitude
             };
 
+            trackCoordinates.push(pos);
             map.setCenter(pos);
+            marker.setPosition(pos);
         });
+    };
+
+    const initMarker = function() {
+        marker = new google.maps.Marker({
+            map: map,
+            position: center,
+            icon: "https://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_red.png"
+        });
+    };
+
+    const initTrack = function() {
+        track = new google.maps.Polyline({
+            path: trackCoordinates,
+            geodesic: true,
+            strokeColor: '#0000FF',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+        track.setMap(map);
     };
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
-            center: {
-                lat: 52.9154237,
-                lng: 6.6556549,
-            }
+            zoom: 14,
+            center: center
         });
+        initMarker();
         initGeoLocation();
+        initTrack();
     }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE&callback=initMap"></script>
